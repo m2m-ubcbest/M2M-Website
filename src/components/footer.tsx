@@ -1,0 +1,21 @@
+"use client";
+
+/**
+ * Footer component that displays a simple, centered copyright notice.
+ * It automatically updates the displayed year based on the current date.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Footer />
+ * ```
+ *
+ * @returns {JSX.Element} A footer element containing copyright text.
+ */
+export default function Footer() {
+  return (
+    <footer className="py-6 text-center text-sm text-gray-500 border-t border-gray-200">
+      © {new Date().getFullYear()} Muscle to Movement
+    </footer>
+  );
+}
