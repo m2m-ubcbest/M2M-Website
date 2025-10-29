@@ -14,8 +14,8 @@
  */
 export default function Footer() {
   return (
-    <footer className="py-6 text-center text-sm text-gray-500 border-t border-gray-200">
-      © {new Date().getFullYear()} Muscle to Movement
+    <footer className="relative z-30 mt-6 py-6 text-center text-sm  text-gray-500 border-t border-gray-200 glass-panel rounded-none">
+      Insert footer here
     </footer>
   );
 }
