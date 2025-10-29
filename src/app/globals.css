@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+@theme {
+  --shadow-glass: 0 12px 40px rgba(15, 23, 42, 0.18);
+  --shadow-glass-strong: 0 20px 45px rgba(15, 23, 42, 0.35);
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-3xl border border-white/25 bg-white/10 backdrop-blur-xs shadow-glass;
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-white/20 bg-white/15 backdrop-blur-xs shadow-glass;
+  }
+
+  .glass-card-strong {
+    @apply rounded-3xl border border-white/20 bg-white/15 backdrop-blur-xs shadow-glass-strong;
+  }
+
+  .section-shell {
+    @apply flex w-full justify-center px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-inner {
+    @apply w-full max-w-6xl;
+  }
+
+  .page-stack {
+    @apply flex flex-col gap-16 sm:gap-20 lg:gap-24;
+  }
+
+  .full-bleed {
+    @apply relative left-1/2 w-screen max-w-[2560px] -translate-x-1/2;
+  }
+}
