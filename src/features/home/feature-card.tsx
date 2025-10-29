@@ -30,7 +30,7 @@ export function FeatureSection({
   return (
     <section ref={sectionRef} className="section-shell">
       <div
-        className={`section-inner relative overflow-hidden glass-panel p-8 sm:p-10 lg:grid lg:grid-cols-[1.2fr_1fr] lg:gap-14 ${
+        className={`section-inner relative overflow-hidden glass-panel-xs p-8 sm:p-10 lg:grid lg:grid-cols-[1.2fr_1fr] lg:gap-14 ${
           reverse ? "lg:[&>*:first-child]:order-2" : ""
         }`}
       >

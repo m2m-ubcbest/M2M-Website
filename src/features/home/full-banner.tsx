@@ -11,7 +11,7 @@ export function FullBanner({ sectionRef }: FullBannerProps) {
   return (
     <section
       ref={sectionRef}
-      className="full-bleed glass-panel px-4 py-12 sm:px-10 sm:py-20 rounded-none"
+      className="full-bleed glass-panel-xs px-4 py-12 sm:px-10 sm:py-20 rounded-none"
     >
       <div className="section-inner mx-auto flex w-full flex-col items-center text-center">
         <div className="mx-auto max-w-3xl space-y-4">

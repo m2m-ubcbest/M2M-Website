@@ -24,7 +24,7 @@ const computeGridSettings = (
   const baseHeight = Math.max(480, viewportHeight);
   const density =
     baseWidth < 640
-      ? 0.003
+      ? 0.001
       : baseWidth < 1024
       ? 0.00105
       : baseWidth < 1600

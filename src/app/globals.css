@@ -6,8 +6,11 @@
 }
 
 @layer components {
-  .glass-panel {
+  .glass-panel-xs {
     @apply rounded-3xl border border-white/25 bg-white/10 backdrop-blur-xs shadow-glass;
+  }
+  .glass-panel-md {
+    @apply rounded-3xl border border-white/25 bg-white/10 backdrop-blur-md shadow-glass;
   }
 
   .glass-card {

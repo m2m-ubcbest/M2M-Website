@@ -14,7 +14,7 @@
  */
 export default function Footer() {
   return (
-    <footer className="relative z-30 mt-6 py-6 text-center text-sm  text-gray-500 border-t border-gray-200 glass-panel rounded-none">
+    <footer className="relative z-30 mt-6 py-6 text-center text-sm  text-gray-500 border-t border-gray-200 glass-panel-xs rounded-none">
       Insert footer here
     </footer>
   );

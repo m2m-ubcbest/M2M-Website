@@ -105,7 +105,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed xl:top-6 left-1/2 z-50 flex w-full xl:w-max-6xl xl:max-w-6xl -translate-x-1/2 items-center justify-between xl:rounded-full overflow-hidden border border-white/50 bg-white/10 px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.2)] backdrop-blur-md transition-all duration-300">
+      <nav className="fixed xl:top-6 left-1/2 z-50 flex w-full xl:w-max-6xl xl:max-w-6xl -translate-x-1/2 items-center justify-between xl:rounded-full overflow-hidden border px-6 py-3 glass-panel-md rounded-none transition-all duration-300">
         <Link href="/" className="flex items-center space-x-2">
           <img src="/m2m-logo.svg" alt="M2M Logo" className="max-h-10" />
         </Link>
@@ -125,13 +125,13 @@ export default function Navbar() {
         <button
           type="button"
           onClick={handleOpenMenu}
-          className="relative flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 bg-white/10 text-white outline-none transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 md:hidden"
+          className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-white/25 hover: text-white outline-none transition  md:hidden hover:cursor-pointer hover:border-[#90BFFF] hover:scale-105"
           aria-label="Open navigation menu"
           aria-expanded={isMenuOpen}
         >
-          <span className="absolute h-0.5 w-5 -translate-y-2.5 rounded-full bg-gray-300 transition-transform duration-300" />
-          <span className="absolute h-0.5 w-5 rounded-full bg-gray-300 transition-opacity duration-300" />
-          <span className="absolute h-0.5 w-5 translate-y-2.5 rounded-full bg-gray-300 transition-transform duration-300" />
+          <span className="absolute h-0.5 w-4 rounded-full bg-gray-300 transition-all duration-300 group-hover:bg-[#90BFFF] -translate-y-1.5" />
+          <span className="absolute h-0.5 w-4 rounded-full bg-gray-300 transition-all duration-300 group-hover:bg-[#90BFFF]" />
+          <span className="absolute h-0.5 w-4 rounded-full bg-gray-300 transition-all duration-300 group-hover:bg-[#90BFFF] translate-y-1.5" />
         </button>
       </nav>
 
@@ -146,20 +146,20 @@ export default function Navbar() {
               onClick={handleNavigate}
               className="flex items-center"
             >
-              <img src="/m2m-logo.svg" alt="M2M" className="max-h-8" />
+              <img src="/m2m-logo.svg" alt="M2M" className="max-h-10" />
             </Link>
             <button
               type="button"
               onClick={handleCloseMenu}
-              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-black/30 bg-black/10 text-black transition hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+              className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-gray-400 transition    hover:bg-white/20 hover:border-[#90BFFF] hover:scale-105"
               aria-label="Close navigation menu"
             >
-              <span className="absolute h-0.5 w-5 rotate-45 rounded-full bg-current" />
-              <span className="absolute h-0.5 w-5 -rotate-45 rounded-full bg-current" />
+              <span className="absolute h-0.5 w-5 rotate-45 rounded-full bg-gray-400 transition-all duration-300 group-hover:bg-[#90BFFF]" />
+              <span className="absolute h-0.5 w-5 -rotate-45 rounded-full bg-gray-400 transition-all duration-300 group-hover:bg-[#90BFFF]" />
             </button>
           </div>
 
-          <div className="flex flex-1 flex-col items-center justify-center gap-10 px-6 text-center text-3xl font-semibold">
+          <div className="flex flex-1 flex-col items-center justify-center gap-10 px-6 text-center text-3xl">
             {navLinks.map((link, index) => (
               <Link
                 key={link.href}
