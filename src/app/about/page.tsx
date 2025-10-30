@@ -1,5 +1,4 @@
 "use client";
-
 export default function About() {
   return (
     <div className="relative z-10 overflow-hidden">

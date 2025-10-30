@@ -8,6 +8,7 @@ import { SupportCard } from "@/features/home/support-card";
 import { m2mAppSteps, gameControllerSteps, physioAppSteps } from "@/data/home";
 import { Hero } from "@/features/home/hero";
 import { FullBanner } from "@/features/home/full-banner";
+import ThreeDisplay from "@/components/three-display";
 
 export default function Home() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);

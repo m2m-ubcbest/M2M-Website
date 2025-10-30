@@ -1,5 +1,6 @@
 "use client";
 
+import ThreeDisplay from "@/components/three-display";
 import { InfoCard } from "./info-card";
 
 type Step = {
@@ -37,22 +38,24 @@ export function FeatureSection({
         <div className="pointer-events-none absolute inset-0 -z-10 bg-linear-to-br from-white/30 via-white/10 to-white/0 opacity-60" />
 
         {/* Left column (text + steps) */}
-        <div className="space-y-6">
+        <div className="flex flex-col justify-between space-y-6">
           <span
             data-animate
-            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white"
+            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-white w-fit"
           >
             {label}
           </span>
-          <h2
-            data-animate
-            className="text-3xl font-semibold text-slate-900 sm:text-4xl"
-          >
-            {title}
-          </h2>
-          <p data-animate className="text-base text-slate-600 sm:text-lg">
-            {description}
-          </p>
+          <div className="space-y-6">
+            <h2
+              data-animate
+              className="text-3xl font-semibold text-slate-900 sm:text-4xl"
+            >
+              {title}
+            </h2>
+            <p data-animate className="text-base text-slate-600 sm:text-lg">
+              {description}
+            </p>
+          </div>
           <div className="grid gap-6">
             {steps.map((step, index) => (
               <InfoCard
@@ -67,12 +70,21 @@ export function FeatureSection({
         </div>
 
         {/* Right column (dark card) */}
-        <div className="flex flex-col justify-between gap-2 rounded-3xl bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-[0_20px_45px_rgba(15,23,42,0.35)]">
+        <div className="flex flex-col justify-between gap-6 rounded-3xl bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-lg">
           <div data-animate className="space-y-4">
             <h3 className="text-2xl font-semibold">Available soon</h3>
             <p className="text-sm text-slate-200/80">Stay tuned for updates</p>
           </div>
-
+          <div
+            data-animate
+            className="relative h-120 w-full overflow-hidden rounded-2xl "
+          >
+            <ThreeDisplay
+              className="absolute inset-0"
+              style={{ width: "100%", height: "100%" }}
+              fileName="app.glb"
+            />
+          </div>
           <div data-animate className="space-y-1 text-sm text-slate-200/80">
             <p className="font-semibold text-white">More details coming soon</p>
             <p>We’re polishing everything for release.</p>

@@ -7,7 +7,7 @@ export function SupportCard({ sectionRef }: SupportCardProps) {
   return (
     <section ref={sectionRef} className="section-shell">
       <div className="section-inner relative overflow-hidden rounded-3xl border border-white/70 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-white shadow-xl shadow-slate-900/20 sm:px-10 sm:py-14">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[url('/noise.png')] bg-cover bg-right opacity-20 md:block" />
+        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-right opacity-20 md:block" />
 
         <div className="relative max-w-3xl space-y-6">
           <h2 data-animate className="text-3xl font-semibold sm:text-4xl">
