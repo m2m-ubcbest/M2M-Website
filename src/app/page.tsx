@@ -8,7 +8,6 @@ import { SupportCard } from "@/features/home/support-card";
 import { m2mAppSteps, gameControllerSteps, physioAppSteps } from "@/data/home";
 import { Hero } from "@/features/home/hero";
 import { FullBanner } from "@/features/home/full-banner";
-import ThreeDisplay from "@/components/three-display";
 
 export default function Home() {
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -99,6 +98,7 @@ export default function Home() {
         label="Software"
         title="M2M Mobile Application"
         description="Our application is currently undergoing step 2 of development."
+        fileName="/app.glb"
         steps={m2mAppSteps}
       />
 
@@ -108,6 +108,9 @@ export default function Home() {
         title="Game Pad"
         description="Our hardware is currently undergoing step 2 of development."
         steps={gameControllerSteps}
+        fileName="/hardware.glb"
+        zoomMultiplier={1.5}
+        elevationAngle={20}
         reverse
       />
 
@@ -116,6 +119,7 @@ export default function Home() {
         label="Software"
         title="Physio App"
         description="Our hardware is currently undergoing step 2 of development."
+        fileName="/app.glb"
         steps={physioAppSteps}
       />
       <SupportCard sectionRef={setSectionRef(6)} />

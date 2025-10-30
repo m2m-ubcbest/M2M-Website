@@ -1,26 +1,82 @@
 import * as THREE from "three";
 import type { CSSProperties } from "react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   GLTFLoader,
   OrbitControls,
   type GLTF,
 } from "three/examples/jsm/Addons.js";
 
-type ThreeDisplayProps = {
+export interface ThreeDisplayProps {
   fileName?: string;
   className?: string;
   style?: CSSProperties;
   useVariableSpeed?: boolean;
-};
+  zoomMultiplier?: number;
+  elevationAngle?: number;
+}
 
 const ThreeDisplay = ({
   className,
   style,
   fileName = "app.glb",
   useVariableSpeed = true,
+  zoomMultiplier = 1.5,
+  elevationAngle = 0,
 }: ThreeDisplayProps) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
+  const animationIdRef = useRef<number>(0);
+  const fitDistanceRef = useRef<number>(0);
+  const resetTimeoutRef = useRef<number | undefined>(undefined);
+  const initialCameraPositionRef = useRef(new THREE.Vector3());
+  const initialTargetRef = useRef(new THREE.Vector3());
+  const zoomMultiplierRef = useRef(zoomMultiplier);
+  const elevationAngleRef = useRef(elevationAngle);
+
+  const applyCameraSettings = useCallback(() => {
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    const fitDistance = fitDistanceRef.current;
+
+    if (!camera || !controls || fitDistance <= 0) {
+      return;
+    }
+
+    const clampedZoom = Math.max(0.1, zoomMultiplierRef.current);
+    const clampedAngle = THREE.MathUtils.clamp(
+      elevationAngleRef.current,
+      -89,
+      89
+    );
+    const distance = fitDistance * clampedZoom;
+    const elevationRadians = THREE.MathUtils.degToRad(clampedAngle);
+
+    const y = Math.sin(elevationRadians) * distance;
+    const z = Math.cos(elevationRadians) * distance;
+
+    camera.position.set(0, y, z);
+    camera.near = Math.max(0.1, distance / 10);
+    camera.far = distance * 10;
+    camera.lookAt(controls.target);
+    camera.updateProjectionMatrix();
+
+    initialCameraPositionRef.current.copy(camera.position);
+    initialTargetRef.current.copy(controls.target);
+    controls.update();
+  }, []);
+
+  useEffect(() => {
+    zoomMultiplierRef.current = zoomMultiplier;
+    applyCameraSettings();
+  }, [zoomMultiplier, applyCameraSettings]);
+
+  useEffect(() => {
+    elevationAngleRef.current = elevationAngle;
+    applyCameraSettings();
+  }, [elevationAngle, applyCameraSettings]);
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -39,11 +95,13 @@ const ThreeDisplay = ({
       0.1,
       5000
     );
+    cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(initialWidth, initialHeight);
     renderer.setClearColor(0x000000, 0);
+    rendererRef.current = renderer;
     currentMount.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -51,6 +109,7 @@ const ThreeDisplay = ({
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.autoRotate = true;
+    controlsRef.current = controls;
 
     const slowAutoSpeed = 2;
     const fastAutoSpeed = 15;
@@ -64,9 +123,7 @@ const ThreeDisplay = ({
     scene.add(ambientLight, directionalLight);
 
     const loader = new GLTFLoader();
-    const initialCameraPosition = new THREE.Vector3();
-    const initialTarget = new THREE.Vector3();
-    let resetTimeout: number | undefined;
+
     loader.load(
       fileName,
       (gltf: GLTF) => {
@@ -95,36 +152,40 @@ const ThreeDisplay = ({
           size.z
         );
 
-        camera.position.set(0, 0, fitDistance * 1.5);
-        camera.near = Math.max(0.1, fitDistance / 10);
-        camera.far = fitDistance * 10;
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-        camera.updateProjectionMatrix();
-
+        fitDistanceRef.current = fitDistance;
         controls.target.set(0, 0, 0);
         controls.update();
-        initialCameraPosition.copy(camera.position);
-        initialTarget.copy(controls.target);
+        applyCameraSettings();
 
-        if (resetTimeout !== undefined) {
-          window.clearTimeout(resetTimeout);
+        if (resetTimeoutRef.current !== undefined) {
+          window.clearTimeout(resetTimeoutRef.current);
         }
-        resetTimeout = window.setTimeout(() => {
-          camera.position.copy(initialCameraPosition);
-          controls.target.copy(initialTarget);
-          camera.lookAt(initialTarget);
-          controls.update();
+        resetTimeoutRef.current = window.setTimeout(() => {
+          if (!cameraRef.current || !controlsRef.current) {
+            return;
+          }
+          cameraRef.current.position.copy(initialCameraPositionRef.current);
+          controlsRef.current.target.copy(initialTargetRef.current);
+          cameraRef.current.lookAt(initialTargetRef.current);
+          controlsRef.current.update();
         }, 5000);
       },
       undefined,
       (error) => {
-        console.error("Failed to load app.gltf:", error);
+        console.error(`Failed to load ${fileName}:`, error);
       }
     );
 
-    let animationId = 0;
     const animate = () => {
-      animationId = requestAnimationFrame(animate);
+      animationIdRef.current = requestAnimationFrame(animate);
+      const renderer = rendererRef.current;
+      const camera = cameraRef.current;
+      const controls = controlsRef.current;
+
+      if (!renderer || !camera || !controls) {
+        return;
+      }
+
       if (useVariableSpeed) {
         const azimuth = controls.getAzimuthalAngle();
         const frontFactor = (Math.cos(azimuth) + 1) / 2;
@@ -145,11 +206,14 @@ const ThreeDisplay = ({
     animate();
 
     const resizeRenderer = () => {
-      if (!mountRef.current) {
+      const mount = mountRef.current;
+      const camera = cameraRef.current;
+      const renderer = rendererRef.current;
+      if (!mount || !camera || !renderer) {
         return;
       }
-      const width = mountRef.current.clientWidth || window.innerWidth;
-      const height = mountRef.current.clientHeight || window.innerHeight;
+      const width = mount.clientWidth || window.innerWidth;
+      const height = mount.clientHeight || window.innerHeight;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
@@ -165,18 +229,27 @@ const ThreeDisplay = ({
     }
 
     return () => {
-      cancelAnimationFrame(animationId);
-      controls.dispose();
-      renderer.dispose();
+      cancelAnimationFrame(animationIdRef.current);
+      controlsRef.current?.dispose();
+      rendererRef.current?.dispose();
       window.removeEventListener("resize", handleResize);
       resizeObserver?.disconnect();
-      if (resetTimeout !== undefined) {
-        window.clearTimeout(resetTimeout);
+      if (resetTimeoutRef.current !== undefined) {
+        window.clearTimeout(resetTimeoutRef.current);
       }
       scene.clear();
-      currentMount.removeChild(renderer.domElement);
+      if (rendererRef.current) {
+        const dom = rendererRef.current.domElement;
+        if (dom.parentNode === currentMount) {
+          currentMount.removeChild(dom);
+        }
+      }
+      rendererRef.current = null;
+      cameraRef.current = null;
+      controlsRef.current = null;
+      fitDistanceRef.current = 0;
     };
-  }, [fileName, useVariableSpeed]);
+  }, [applyCameraSettings, fileName, useVariableSpeed]);
 
   const containerStyle: CSSProperties = {
     width: "100vw",
