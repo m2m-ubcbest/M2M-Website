@@ -51,11 +51,14 @@ export function FeatureSection({
           <div className="space-y-6">
             <h2
               data-animate
-              className="text-3xl font-semibold text-slate-900 sm:text-4xl"
+              className="text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl"
             >
               {title}
             </h2>
-            <p data-animate className="text-base text-slate-600 sm:text-lg">
+            <p
+              data-animate
+              className="text-base text-slate-600 dark:text-slate-400 sm:text-lg"
+            >
               {description}
             </p>
           </div>
@@ -66,7 +69,7 @@ export function FeatureSection({
                 title={step.title}
                 caption={step.caption}
                 stepLabel={(index + 1).toString()}
-                className="bg-white"
+                className="bg-white dark:bg-slate-200"
               />
             ))}
           </div>

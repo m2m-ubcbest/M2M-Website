@@ -6,7 +6,7 @@ interface SupportCardProps {
 export function SupportCard({ sectionRef }: SupportCardProps) {
   return (
     <section ref={sectionRef} className="section-shell">
-      <div className="section-inner relative overflow-hidden rounded-3xl border border-white/70 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-white sm:px-10 sm:py-14">
+      <div className="section-inner relative overflow-hidden rounded-3xl border border-white/70 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-white sm:px-10 sm:py-14 dark:border-slate-700">
         <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-right opacity-20 md:block" />
 
         <div className="relative max-w-3xl space-y-6">
@@ -22,16 +22,10 @@ export function SupportCard({ sectionRef }: SupportCardProps) {
           </p>
 
           <div data-animate className="flex flex-wrap items-center gap-4">
-            <a
-              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5"
-              href="/contact"
-            >
+            <a className="btn-primary-light" href="/contact">
               Sponsor Us
             </a>
-            <a
-              className="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-              href="/about"
-            >
+            <a className="btn-outline-light" href="/about">
               Learn More
             </a>
           </div>

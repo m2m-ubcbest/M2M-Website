@@ -4,6 +4,7 @@ import { animate, stagger } from "animejs";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { navLinks } from "@/data/navlinks";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -120,6 +121,7 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <ThemeToggle />
         </div>
 
         <button

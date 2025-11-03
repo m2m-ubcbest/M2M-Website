@@ -17,11 +17,14 @@ export function FullBanner({ sectionRef }: FullBannerProps) {
         <div className="mx-auto max-w-3xl space-y-4">
           <h2
             data-animate
-            className="text-3xl font-semibold text-slate-900 sm:text-4xl"
+            className="text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl"
           >
             Advancing mobility and independence through intelligent technology
           </h2>
-          <p data-animate className="text-base text-slate-600 sm:text-lg">
+          <p
+            data-animate
+            className="text-base text-slate-600 sm:text-lg dark:text-slate-400"
+          >
             At M2M, we design and build innovative software and hardware
             solutions that empower individuals living with Multiple Sclerosis.
             Our mission is to enhance daily mobility, accessibility, and
@@ -34,7 +37,7 @@ export function FullBanner({ sectionRef }: FullBannerProps) {
               key={pathway.title}
               title={pathway.title}
               caption={pathway.description}
-              className="bg-white/70"
+              className="bg-white/70 dark:bg-slate-200"
             />
           ))}
         </div>

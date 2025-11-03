@@ -205,7 +205,7 @@ export function WaterDropGrid() {
     return Array.from({ length: total }, (_, index) => (
       <div key={index} className="flex items-center justify-center">
         <div
-          className="dot-point rounded-full bg-linear-to-b from-slate-900 to-slate-700 opacity-40"
+          className="dot-point rounded-full bg-linear-to-b from-slate-900 to-slate-700 dark:from-slate-300 dark:to-gray-200 opacity-40"
           data-index={index}
           style={{
             width: `${dotSize}px`,

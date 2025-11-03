@@ -22,13 +22,13 @@ export function Hero({ sectionRef }: HeroProps) {
           </span>
           <h1
             data-animate
-            className="text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl lg:text-6xl"
+            className="text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white"
           >
             Muscle to Movement
           </h1>
           <p
             data-animate
-            className="max-w-xl text-base text-slate-600 sm:text-lg"
+            className="max-w-xl text-base text-slate-600 sm:text-lg dark:text-slate-400"
           >
             Muscle to Movement (M2M) aims to enhance and assist in the
             rehabilitation for multiple sclerosis patients through product
@@ -36,7 +36,7 @@ export function Hero({ sectionRef }: HeroProps) {
           </p>
           <div data-animate className="flex flex-wrap items-center gap-4">
             <a
-              className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-700"
+              className="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-700 dark:border dark:border-slate-500"
               href="/about"
             >
               Learn about M2M
@@ -57,10 +57,12 @@ export function Hero({ sectionRef }: HeroProps) {
                 data-animate
                 className="rounded-3xl border border-white/25 p-6 text-center glass-card"
               >
-                <div className="text-3xl font-semibold text-slate-900">
+                <div className="text-3xl font-semibold text-slate-900 dark:text-white">
                   {stat.value}
                 </div>
-                <p className="mt-1 text-sm text-slate-600">{stat.label}</p>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </div>
