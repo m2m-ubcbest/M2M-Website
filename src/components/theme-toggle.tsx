@@ -8,13 +8,21 @@ export function ThemeToggle({}: ThemeToggleProps) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // initialize based on existing class
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    setIsDark(isDarkMode);
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+      setIsDark(true);
+    }
   }, []);
 
   const toggleTheme = () => {
-    document.documentElement.classList.toggle("dark");
+    const newTheme = !isDark ? "dark" : "light";
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", newTheme);
     setIsDark(!isDark);
   };
 
@@ -24,8 +32,8 @@ export function ThemeToggle({}: ThemeToggleProps) {
       className="flex items-center px-2 py-2 rounded-full 
       dark:border-gray-600 
        dark:bg-gray-800 
-      hover:bg-gray-100 dark:hover:bg-gray-700 
-      transition-all duration-200 border border-gray-200"
+      hover:bg-gray-50 dark:hover:bg-gray-700 bg-gray-100/40 backdrop-blur-xs
+      transition-all duration-200 border border-gray-200 "
     >
       {isDark ? (
         <DarkModeIcon fontSize="small" className="text-yellow-400" />

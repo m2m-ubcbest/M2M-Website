@@ -22,10 +22,16 @@ export function SupportCard({ sectionRef }: SupportCardProps) {
           </p>
 
           <div data-animate className="flex flex-wrap items-center gap-4">
-            <a className="btn-primary-light" href="/contact">
+            <a
+              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5"
+              href="/contact"
+            >
               Sponsor Us
             </a>
-            <a className="btn-outline-light" href="/about">
+            <a
+              className="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+              href="/about"
+            >
               Learn More
             </a>
           </div>

@@ -14,7 +14,7 @@ export function FullBanner({ sectionRef }: FullBannerProps) {
       className="full-bleed glass-panel-xs px-4 py-12 sm:px-10 sm:py-20 rounded-none"
     >
       <div className="section-inner mx-auto flex w-full flex-col items-center text-center">
-        <div className="mx-auto max-w-3xl space-y-4">
+        <div className="mx-auto max-w-6xl space-y-4">
           <h2
             data-animate
             className="text-3xl font-semibold text-slate-900 dark:text-white sm:text-4xl"
@@ -31,7 +31,7 @@ export function FullBanner({ sectionRef }: FullBannerProps) {
             confidence through thoughtful, human-centered engineering.
           </p>
         </div>
-        <div className="mx-auto mt-12 grid w-full max-w-3xl gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <div className="mx-auto mt-12 grid w-full max-w-4xl gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {pathways.map((pathway) => (
             <InfoCard
               key={pathway.title}
