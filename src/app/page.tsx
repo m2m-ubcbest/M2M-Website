@@ -1,65 +1,128 @@
-import Image from "next/image";
+"use client";
+
+import { WaterDropGrid } from "@/features/home/water-drop-grid";
+import { animate, set, stagger } from "animejs";
+import { useEffect, useRef } from "react";
+import { FeatureSection } from "@/features/home/feature-card";
+import { SupportCard } from "@/features/home/support-card";
+import { m2mAppSteps, gameControllerSteps, physioAppSteps } from "@/data/home";
+import { Hero } from "@/features/home/hero";
+import { FullBanner } from "@/features/home/full-banner";
 
 export default function Home() {
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+
+  const setSectionRef = (index: number) => (el: HTMLElement | null) => {
+    sectionRefs.current[index] = el;
+  };
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    const sections = sectionRefs.current.filter(
+      (section): section is HTMLElement => Boolean(section)
+    );
+
+    const primeTargets = (elements: NodeListOf<Element>) => {
+      set(elements, { opacity: 0, translateY: 48, rotateX: -6 });
+    };
+
+    const revealTargets = (
+      elements: NodeListOf<Element>,
+      sectionIndex: number
+    ) =>
+      animate(elements, {
+        opacity: 1,
+        translateY: 0,
+        rotateX: 0,
+        easing: "easeOutExpo",
+        duration: 900,
+        delay: stagger(100, { start: sectionIndex * 100 }),
+      });
+
+    if (reduceMotionQuery.matches) {
+      sections.forEach((section) => {
+        const targets = section.querySelectorAll("[data-animate]");
+        set(targets, { opacity: 1, translateY: 0, rotateX: 0 });
+      });
+      return;
+    }
+
+    const observers: IntersectionObserver[] = [];
+
+    sections.forEach((section, sectionIndex) => {
+      const targets = section.querySelectorAll("[data-animate]");
+      if (!targets.length) {
+        return;
+      }
+
+      primeTargets(targets);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              revealTargets(targets, sectionIndex);
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+
+      observer.observe(section);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="relative z-10 overflow-hidden flex flex-col gap-8">
+      <WaterDropGrid />
+
+      <Hero sectionRef={setSectionRef(0)} />
+
+      <FullBanner sectionRef={setSectionRef(1)} />
+
+      <FeatureSection
+        sectionRef={setSectionRef(2)}
+        label="Software"
+        title="M2M Mobile Application"
+        description="Our application is currently undergoing step 2 of development."
+        fileName="/app.glb"
+        steps={m2mAppSteps}
+      />
+
+      <FeatureSection
+        sectionRef={setSectionRef(4)}
+        label="Hardware"
+        title="Game Pad"
+        description="Our hardware is currently undergoing step 2 of development."
+        steps={gameControllerSteps}
+        fileName="/hardware.glb"
+        zoomMultiplier={1.5}
+        elevationAngle={20}
+        reverse
+      />
+
+      <FeatureSection
+        sectionRef={setSectionRef(5)}
+        label="Software"
+        title="Physio App"
+        description="Our hardware is currently undergoing step 2 of development."
+        fileName="/app.glb"
+        steps={physioAppSteps}
+      />
+      <SupportCard sectionRef={setSectionRef(6)} />
     </div>
   );
 }
