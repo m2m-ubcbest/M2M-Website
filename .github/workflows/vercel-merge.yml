@@ -9,6 +9,11 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    env:
+      VERCEL_GIT_COMMIT_AUTHOR_LOGIN: m2m-ubcbest
+      VERCEL_GIT_COMMIT_AUTHOR_NAME: "UBC BEST M2M"
+      VERCEL_GIT_COMMIT_AUTHOR_EMAIL: m2m.ubcbest@gmail.com
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,7 +25,3 @@ jobs:
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
           scope: ${{ secrets.ORG_ID }}
-        env:
-          VERCEL_GIT_COMMIT_AUTHOR_LOGIN: m2m-ubcbest
-          VERCEL_GIT_COMMIT_AUTHOR_NAME: "UBC BEST M2M"
-          VERCEL_GIT_COMMIT_AUTHOR_EMAIL: m2m.ubcbest@gmail.com
