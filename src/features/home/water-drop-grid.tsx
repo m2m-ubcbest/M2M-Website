@@ -81,21 +81,17 @@ const computeGridSettings = (
   };
 };
 
-const DEFAULT_SETTINGS = computeGridSettings(1280, 720);
-
 export function WaterDropGrid() {
   const gridRef = useRef<HTMLDivElement>(null);
-  const [gridSettings, setGridSettings] =
-    useState<GridSettings>(DEFAULT_SETTINGS);
+  const [gridSettings, setGridSettings] = useState<GridSettings | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const updateGrid = () => {
+    const updateGrid = () =>
       setGridSettings(
         computeGridSettings(window.innerWidth, window.innerHeight)
       );
-    };
 
     updateGrid();
     window.addEventListener("resize", updateGrid);
@@ -104,7 +100,7 @@ export function WaterDropGrid() {
 
   useEffect(() => {
     const grid = gridRef.current;
-    if (!grid) return;
+    if (!grid || !gridSettings) return;
 
     const { columns } = gridSettings;
 
@@ -200,6 +196,7 @@ export function WaterDropGrid() {
   }, [gridSettings]);
 
   const dots = useMemo(() => {
+    if (!gridSettings) return [];
     const { columns, rows, dotSize } = gridSettings;
     const total = columns * rows;
     return Array.from({ length: total }, (_, index) => (
@@ -215,6 +212,10 @@ export function WaterDropGrid() {
       </div>
     ));
   }, [gridSettings]);
+
+  if (!gridSettings) {
+    return null;
+  }
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden">
