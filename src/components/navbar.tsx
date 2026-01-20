@@ -2,6 +2,7 @@
 
 import { animate, stagger } from "animejs";
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { navLinks } from "@/data/navlinks";
 import { ThemeToggle } from "./theme-toggle";
@@ -108,7 +109,14 @@ export default function Navbar() {
     <>
       <nav className="fixed xl:top-6 left-1/2 z-50 flex w-full xl:w-max-6xl xl:max-w-6xl -translate-x-1/2 items-center justify-between xl:rounded-full overflow-hidden border px-6 py-3 glass-panel-md rounded-none transition-all duration-300">
         <Link href="/" className="flex items-center space-x-2">
-          <img src="/m2m-logo.svg" alt="M2M Logo" className="max-h-10" />
+          <Image
+            src="/m2m-logo.svg"
+            alt="M2M Logo"
+            width={80}
+            height={40}
+            priority
+            className="h-10 w-auto"
+          />
         </Link>
 
         <div className="hidden items-center space-x-8 md:flex">
@@ -148,7 +156,14 @@ export default function Navbar() {
               onClick={handleNavigate}
               className="flex items-center"
             >
-              <img src="/m2m-logo.svg" alt="M2M" className="max-h-10" />
+              <Image
+                src="/m2m-logo.svg"
+                alt="M2M"
+                width={80}
+                height={40}
+                priority
+                className="h-10 w-auto"
+              />
             </Link>
             <button
               type="button"
